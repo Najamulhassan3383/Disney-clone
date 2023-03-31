@@ -92,6 +92,7 @@ const NavMenu = styled.div`
     cursor: pointer;
     img {
       height: 20px;
+      margin-right: 5px;
     }
     span {
       font-size: 13px;
@@ -117,5 +118,8 @@ const NavMenu = styled.div`
         opacity: 1;
       }
     }
+  }
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
