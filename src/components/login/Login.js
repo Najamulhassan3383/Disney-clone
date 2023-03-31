@@ -2,13 +2,14 @@ import styled from "styled-components";
 import image from "../images/login-background.jpg";
 import cta_one from "../images/cta-logo-one.svg";
 import cat_two from "../images/cta-logo-two.png";
+
 const Login = (props) => {
   return (
     <Container>
       <Content>
         <BgImage />
         <CTA>
-          <CTALogoOne src={cta_one} alt="" />
+          <CTALogoOne src={cta_one} alt="i am here" />
           <SignUp>GET ALL THERE</SignUp>
           <Description>
             Get Premier Access to Raya and the Last Dragon for an additional fee
