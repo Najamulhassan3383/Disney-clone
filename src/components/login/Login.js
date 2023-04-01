@@ -2,6 +2,7 @@ import styled from "styled-components";
 import image from "../images/login-background.jpg";
 import cta_one from "../images/cta-logo-one.svg";
 import cat_two from "../images/cta-logo-two.png";
+// import { auth, provider } from "../../Firebase";
 
 const Login = (props) => {
   return (

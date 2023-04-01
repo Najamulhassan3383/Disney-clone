@@ -7,6 +7,8 @@ import watchlist from "../images/watchlist-icon.svg";
 import originals from "../images/original-icon.svg";
 import movies from "../images/movie-icon.svg";
 import series from "../images/series-icon.svg";
+// import { auth, provider } from "../../Firebase";
+import signInWithGoogle from "../../Firebase";
 
 function Header(props) {
   return (
@@ -40,7 +42,7 @@ function Header(props) {
           <span>SERIES</span>
         </a>
       </NavMenu>
-      <LoginButton>Login</LoginButton>
+      <LoginButton onClick={signInWithGoogle}>Login</LoginButton>
     </Nav>
   );
 }
