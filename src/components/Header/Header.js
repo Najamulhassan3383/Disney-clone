@@ -8,42 +8,93 @@ import originals from "../images/original-icon.svg";
 import movies from "../images/movie-icon.svg";
 import series from "../images/series-icon.svg";
 // import { auth, provider } from "../../Firebase";
-import signInWithGoogle from "../../Firebase";
+import { auth, provider } from "../../Firebase";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  selectUserName,
+  selectUserPhoto,
+  setUserLoginDetails,
+  setSignOutState,
+} from "../../features/users/UserSlice";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 function Header(props) {
+  const dispatch = useDispatch();
+  const history = useNavigate();
+  const userName = useSelector(selectUserName);
+  const userPhoto = useSelector(selectUserPhoto);
+
+  const setUser = (user) => {
+    dispatch(
+      setUserLoginDetails({
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+      })
+    );
+  };
+
+  const signInWithGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        let user = result.user;
+        setUser(user);
+
+        console.log(user);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <Nav>
       <Logo src={logo} />
-      <NavMenu>
-        <a href="/home">
-          <img src={home} alt="HOME" />
-          <span>HOME</span>
-        </a>
-        <a href="/search">
-          <img src={search} alt="SEARCH" />
-          <span>SEARCH</span>
-        </a>
+      {userName ? (
+        <>
+          <NavMenu>
+            <Link to="/home">
+              <img src={home} alt="HOME" />
+              <span>HOME</span>
+            </Link>
+            <a href="/search">
+              <img src={search} alt="SEARCH" />
+              <span>SEARCH</span>
+            </a>
 
-        <a href="/watchlist">
-          <img src={watchlist} alt="WATCHLIST" />
-          <span>WATCHLIST</span>
-        </a>
-        <a href="/originals">
-          <img src={originals} alt="ORIGINALS" />
-          <span>ORIGINALS</span>
-        </a>
+            <a href="/watchlist">
+              <img src={watchlist} alt="WATCHLIST" />
+              <span>WATCHLIST</span>
+            </a>
+            <a href="/originals">
+              <img src={originals} alt="ORIGINALS" />
+              <span>ORIGINALS</span>
+            </a>
 
-        <a href="/movies">
-          <img src={movies} alt="MOVIES" />
-          <span>MOVIES</span>
-        </a>
-        <a href="/series">
-          <img src={series} alt="SERIES" />
-          <span>SERIES</span>
-        </a>
-      </NavMenu>
-      <LoginButton onClick={signInWithGoogle}>Login</LoginButton>
+            <a href="/movies">
+              <img src={movies} alt="MOVIES" />
+              <span>MOVIES</span>
+            </a>
+            <a href="/series">
+              <img src={series} alt="SERIES" />
+              <span>SERIES</span>
+            </a>
+          </NavMenu>
+          <UserImg
+            src={userPhoto}
+            onClick={() => {
+              auth.signOut();
+              dispatch(setSignOutState());
+              history("/login");
+            }}
+          />
+        </>
+      ) : (
+        <LoginButton onClick={signInWithGoogle}>Login</LoginButton>
+      )}
+
+      {/* <LoginButton onClick={signInWithGoogle}>Login</LoginButton> */}
     </Nav>
   );
 }
@@ -125,4 +176,11 @@ const NavMenu = styled.div`
   @media (max-width: 768px) {
     display: none;
   }
+`;
+
+const UserImg = styled.img`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
 `;

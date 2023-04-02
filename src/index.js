@@ -4,10 +4,23 @@ import "./index.css";
 import App from "./App";
 // import reportWebVitals from './reportWebVitals';
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Home from "./components/Home/Home";
+import Login from "./components/login/Login";
 let router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    children: [
+      {
+        index: true,
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/home",
+        element: <Home />,
+      },
+    ],
   },
 ]);
 
