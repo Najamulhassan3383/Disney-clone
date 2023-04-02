@@ -9,6 +9,7 @@ import movies from "../images/movie-icon.svg";
 import series from "../images/series-icon.svg";
 // import { auth, provider } from "../../Firebase";
 import signInWithGoogle from "../../Firebase";
+import { useDispatch, useSelector } from "react-redux";
 
 function Header(props) {
   return (
