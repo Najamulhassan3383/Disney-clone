@@ -10,20 +10,31 @@ import series from "../images/series-icon.svg";
 // import { auth, provider } from "../../Firebase";
 import { auth, provider } from "../../Firebase";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import {
   selectUserName,
   selectUserPhoto,
   setUserLoginDetails,
   setSignOutState,
 } from "../../features/users/UserSlice";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { signInWithPopup } from "firebase/auth";
+import { useEffect, useHistory } from "react";
+import Home from "../Home/Home";
 
 function Header(props) {
   const dispatch = useDispatch();
   const history = useNavigate();
   const userName = useSelector(selectUserName);
   const userPhoto = useSelector(selectUserPhoto);
+
+  useEffect(() => {
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        setUser(user);
+        history("/home");
+      }
+    });
+  }, [userName]);
 
   const setUser = (user) => {
     dispatch(
@@ -46,6 +57,13 @@ function Header(props) {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleSignOut = () => {
+    auth.signOut().then(() => {
+      dispatch(setSignOutState());
+      history("/login");
+    });
   };
 
   return (
@@ -81,20 +99,16 @@ function Header(props) {
               <span>SERIES</span>
             </a>
           </NavMenu>
-          <UserImg
-            src={userPhoto}
-            onClick={() => {
-              auth.signOut();
-              dispatch(setSignOutState());
-              history("/login");
-            }}
-          />
+          <SignOut>
+            <UserImg src={userPhoto} alt="user" />
+            <DropDown>
+              <span onClick={handleSignOut}>Sign Out</span>
+            </DropDown>
+          </SignOut>
         </>
       ) : (
         <LoginButton onClick={signInWithGoogle}>Login</LoginButton>
       )}
-
-      {/* <LoginButton onClick={signInWithGoogle}>Login</LoginButton> */}
     </Nav>
   );
 }
@@ -183,4 +197,39 @@ const UserImg = styled.img`
   height: 48px;
   border-radius: 50%;
   cursor: pointer;
+`;
+
+const DropDown = styled.div`
+  position: absolute;
+  top: 48px;
+  right: 0;
+  background: rgb(19, 19, 19);
+  border: 1px solid rgba(151, 151, 151, 0.34);
+  border-radius: 4px;
+  box-shadow: rgb(0 0 0 / 50%) 0px 0px 18px 0px;
+  padding: 10px;
+  font-size: 14px;
+
+  width: 100px;
+  opacity: 0;
+`;
+const SignOut = styled.div`
+  position: relative;
+  height: 48px;
+  width: 48px;
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  ${UserImg} {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+  }
+  &:hover {
+    ${DropDown} {
+      opacity: 1;
+      transition-duration: 1s;
+    }
+  }
 `;

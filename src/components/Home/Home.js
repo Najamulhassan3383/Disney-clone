@@ -1,14 +1,28 @@
 import styled from "styled-components";
+import homeimage from "../images/home-background.png";
 
 import React from "react";
 
 function Home() {
-  return <Big>very big home is here, where are you buddy?</Big>;
+  return <Container>Home</Container>;
 }
 
 export default Home;
 
-const Big = styled.div`
-  font-size: 100px;
-  margin-top: 70px;
+const Container = styled.main`
+  position: relative;
+  min-height: calc(100vh - 250px);
+  overflow-x: hidden;
+  display: block;
+  top: 72px;
+  padding: 0 calc(3.5vw + 5px);
+
+  &:after {
+    background: url(${homeimage}) center center / cover no-repeat fixed;
+    content: "";
+    position: absolute;
+    inset: 0px;
+    opacity: 1;
+    z-index: -1;
+  }
 `;
