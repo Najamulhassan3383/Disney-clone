@@ -2,9 +2,14 @@ import styled from "styled-components";
 import homeimage from "../images/home-background.png";
 
 import React from "react";
+import ImageSlider from "./ImageSlider";
 
 function Home() {
-  return <Container>Home</Container>;
+  return (
+    <Container>
+      <ImageSlider />
+    </Container>
+  );
 }
 
 export default Home;
