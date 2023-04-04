@@ -3,11 +3,13 @@ import homeimage from "../images/home-background.png";
 
 import React from "react";
 import ImageSlider from "./ImageSlider";
+import Viewers from "./Viewers";
 
 function Home() {
   return (
     <Container>
       <ImageSlider />
+      <Viewers />
     </Container>
   );
 }
